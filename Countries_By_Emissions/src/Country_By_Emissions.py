@@ -23,6 +23,8 @@ country_by_co2 = pd.DataFrame(country_by_co2, columns=["Entity", "Total Emission
 countries = country_by_co2.loc[country_by_co2["Entity"].isin(["China", "Malaysia", "Jamaica", "Finland", "Japan"])]
 ax = countries.plot.bar(x="Entity", y="Total Emissions", rot=0)
 ax.set_ylabel("Total Emissions")
+ax.set_xlabel("Country")
+ax.set_title("Barplot of five random countries")
 ax.get_legend().remove()
 
 # Get a list of the top five biggest countries/regions.
@@ -40,6 +42,16 @@ for country in top_five:
     top_plot.set_ylabel("Annual CO₂ emissions (tonnes )")
     top_plot.set_title(country)
     top_plot.get_legend().remove()
+
+# Combined plot for top five countries.
+plt.figure()
+for country in top_five:
+    data = top_five_country_data.loc[top_five_country_data["Entity"] == country]
+    year = data["Year"]
+    emissions = data["Annual CO₂ emissions (tonnes )"]
+    yb = plt.plot(year, emissions)
+    plt.title("Top five countries")
+    plt.legend(top_five)
 
 if __name__ == "__main__":
     plt.show()
