@@ -8,26 +8,26 @@ co2_data = pd.read_csv("ex3_co2.dat")
 data_after_1950 = co2_data.loc[(co2_data["Year"] >= 1950)]
 
 # Get the total CO2 of all countries and save it to the list total_co2.
-country_list = sorted(list(set(co2_data["Entity"])))
+country_list = list(set(co2_data["Entity"]))
 total_co2 = []
 for country in country_list:
     country_data = data_after_1950.loc[(data_after_1950["Entity"] == country)]
     co2_of_country = country_data["Annual CO₂ emissions (tonnes )"]
     total_co2.append(sum(co2_of_country))
 
-# Get a dataframe of all countries and their total CO2 after 1950.
+# Create a dataframe of all countries and their total CO2 after 1950.
 country_by_co2 = list(zip(country_list, total_co2))
 country_by_co2 = pd.DataFrame(country_by_co2, columns=["Entity", "Total Emissions"])
 
 # Compare some countries with a barplot. Note that only applicable country names will be displayed.
 countries = country_by_co2.loc[country_by_co2["Entity"].isin(["China", "Malaysia", "Jamaica", "Finland", "Japan"])]
-ax = countries.plot.bar(x="Entity", y="Total Emissions", rot=0)
-ax.set_ylabel("Total Emissions")
-ax.set_xlabel("Country")
-ax.set_title("Barplot of five random countries")
-ax.get_legend().remove()
+countries_bar = countries.plot.bar(x="Entity", y="Total Emissions", rot=0)
+countries_bar.set_ylabel("Total Emissions")
+countries_bar.set_xlabel("Country")
+countries_bar.set_title("Barplot of five random countries")
+countries_bar.get_legend().remove()
 
-# Get a list of the top five biggest countries/regions.
+# Get a list of the top five biggest countries/regions excluding world.
 countries_ordered = country_by_co2.sort_values(by="Total Emissions", ascending=False)
 top_five = countries_ordered[1:6]
 top_five = list(top_five["Entity"])
@@ -47,11 +47,9 @@ for country in top_five:
 plt.figure()
 for country in top_five:
     data = top_five_country_data.loc[top_five_country_data["Entity"] == country]
-    year = data["Year"]
-    emissions = data["Annual CO₂ emissions (tonnes )"]
-    yb = plt.plot(year, emissions)
-    plt.title("Top five countries")
-    plt.legend(top_five)
+    plt.plot(data["Year"], data["Annual CO₂ emissions (tonnes )"])
+plt.title("Top five countries/regions")
+plt.legend(top_five)
 
 if __name__ == "__main__":
     plt.show()
