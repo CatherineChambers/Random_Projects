@@ -1,0 +1,7 @@
+you are writing your own shell which handles taking in commands and their params in forms:
+command param < file
+for file being passed in to command's stdin
+command params > file
+for commands stdout being passed in to file
+command1 params | command2 params
+command1's std out passed in to command2's std in
